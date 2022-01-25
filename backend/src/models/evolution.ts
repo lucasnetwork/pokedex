@@ -1,16 +1,14 @@
 import { model, Schema } from "mongoose";
 
-interface MoveProps {
+interface TypeProps {
   name: string;
-  description: string;
+  color: string;
 }
 
 const schema = new Schema({
-  name: String,
-  description: String,
   pokemons: [{ type: Schema.Types.ObjectId, ref: "pokemons" }],
 });
 
-const TypeModel = model("moves", schema);
+const TypeModel = model("evolutions", schema);
 
 export default TypeModel;

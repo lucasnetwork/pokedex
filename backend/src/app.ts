@@ -7,8 +7,8 @@ class App {
 
   constructor() {
     connect(
-      "mongodb+srv://lucas:8674293150@cluster0.msdz9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-    );
+      "mongodb+srv://lucas:@cluster0.msdz9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    ).then(() => console.log("funcionou"));
     this.app = express();
     this.app.use(express.json());
     this.app.use(routes);

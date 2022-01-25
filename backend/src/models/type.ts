@@ -5,11 +5,12 @@ interface TypeProps {
   color: string;
 }
 
-const schema = new Schema<TypeProps>({
+const schema = new Schema({
   name: String,
   color: String,
+  pokemons: [{ type: Schema.Types.ObjectId, ref: "pokemons" }],
 });
 
-const TypeModel = model<TypeProps>("types", schema);
+const TypeModel = model("types", schema);
 
 export default TypeModel;
