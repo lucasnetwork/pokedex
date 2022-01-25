@@ -6,10 +6,12 @@ class Pokemon {
     console.log(req.file);
     const type = new PokemonModel({
       name: req.body.name,
-      image_url: req.file.path,
-      types: req.body.typeId,
-      moves: req.body.moveId,
+      image_url: req.body.imageUrl,
+      types: req.body.typeIds,
+      moves: req.body.moveIds,
       order_evolution: req.body.orderEvolution,
+      height: req.body.height,
+      weight: req.body.weight,
     });
     console.log(type);
     await type.save();
@@ -18,7 +20,10 @@ class Pokemon {
 
   async all(req: Request, res: Response) {
     console.log("pokemons");
+    console.log(req.query);
     const pokemons = await PokemonModel.find()
+      .skip(req.query.offset)
+      .limit(req.query.limit)
       .populate("moves")
       .populate("types")
       .populate({

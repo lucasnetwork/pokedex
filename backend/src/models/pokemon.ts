@@ -8,7 +8,9 @@ interface TypeProps {
 const schema = new Schema({
   name: String,
   image_url: String,
-  order_evolution: Number,
+  order_evolutin: Number,
+  weight: String,
+  height: String,
   types: [{ type: Schema.Types.ObjectId, ref: "types" }],
   moves: [{ type: Schema.Types.ObjectId, ref: "moves" }],
   evolutions: [{ type: Schema.Types.ObjectId, ref: "evolutions" }],

@@ -11,6 +11,13 @@ class Moves {
     await move.save();
     return res.status(201).json(move);
   }
+
+  async all(req: Request, res: Response) {
+    console.log("pokemons");
+    const moves = await Move.find();
+
+    return res.status(200).json(moves);
+  }
 }
 
 export default Moves;

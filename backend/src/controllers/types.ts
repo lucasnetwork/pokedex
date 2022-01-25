@@ -11,6 +11,13 @@ class Types {
     await type.save();
     return res.status(201).json(type);
   }
+
+  async all(req: Request, res: Response) {
+    console.log("pokemons");
+    const types = await Type.find();
+
+    return res.status(200).json(types);
+  }
 }
 
 export default Types;
