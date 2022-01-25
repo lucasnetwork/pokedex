@@ -12,6 +12,14 @@ export default styled.main`
     grid-column: 2 / span 10;
     grid-row-gap: 2rem;
   }
+  .button_container {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
   .card_Container {
     grid-column: span 2;
     background: none;
