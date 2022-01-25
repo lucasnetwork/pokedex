@@ -10,6 +10,7 @@ export default styled.div`
 
   .image_container {
     flex: 3;
+    max-height: 60%;
     position: relative;
     display: flex;
 

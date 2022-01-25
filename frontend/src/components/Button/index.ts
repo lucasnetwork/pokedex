@@ -1,6 +1,15 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
-export default styled.button`
+const loadingAnimation = keyframes`
+    from{
+        transform:rotate(0deg)
+    }to{
+        transform:rotate(360deg)
+
+    }
+`;
+
+export default styled.button<{ loading: boolean }>`
   width: 100%;
   max-width: 26rem;
   height: 4rem;
@@ -10,4 +19,11 @@ export default styled.button`
   font-size: 1.5rem;
   border: none;
   cursor: pointer;
+  ${({ loading }) =>
+    loading &&
+    css`
+      svg {
+        animation: ${loadingAnimation} infinite 1s linear;
+      }
+    `}
 `;

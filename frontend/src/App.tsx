@@ -3,15 +3,18 @@ import Header from "./components/Header";
 import { ThemeProvider } from "styled-components";
 import light from "./theme/light";
 import Routes from "./routes";
+import { ContextProvider } from "./services/context";
 
 function App() {
   return (
-    <ThemeProvider theme={light}>
-      <GlobalStyles />
-      <div className="App">
-        <Routes />
-      </div>
-    </ThemeProvider>
+    <ContextProvider>
+      <ThemeProvider theme={light}>
+        <GlobalStyles />
+        <div className="App">
+          <Routes />
+        </div>
+      </ThemeProvider>
+    </ContextProvider>
   );
 }
 
