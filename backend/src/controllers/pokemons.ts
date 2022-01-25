@@ -3,9 +3,10 @@ import PokemonModel from "../models/pokemon";
 
 class Pokemon {
   async create(req: Request, res: Response) {
+    console.log(req.file);
     const type = new PokemonModel({
       name: req.body.name,
-      image_url: "",
+      image_url: req.file.path,
       types: req.body.typeId,
       moves: req.body.moveId,
       order_evolution: req.body.orderEvolution,
