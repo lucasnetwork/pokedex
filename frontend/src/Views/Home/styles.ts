@@ -26,5 +26,6 @@ export default styled.main`
     border: none;
     outline: none;
     cursor: pointer;
+    text-decoration: none;
   }
 `;

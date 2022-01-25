@@ -5,6 +5,8 @@ import api from "../../config/api";
 import Container from "./styles";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useContextProvider } from "../../services/context";
+import { Link } from "react-router-dom";
+import { getPokemon } from "../../services/api/pokemon";
 const Home = () => {
   const { search } = useContextProvider();
   const [pokemons, setPokemons] = useState<
@@ -49,19 +51,7 @@ const Home = () => {
           },
         });
         const pokemonUrls = response.data.results.map((pokemon) =>
-          api.get<{
-            name: string;
-            url: string;
-            types: Array<{ slot: number; type: { name: string } }>;
-            id: number;
-            sprites: {
-              other: {
-                dream_world: {
-                  front_default: string;
-                };
-              };
-            };
-          }>(pokemon.url)
+          getPokemon(pokemon.name)
         );
         const responsePokemons = await Promise.all(pokemonUrls);
         const mapPokemons = responsePokemons.map((pok) => ({
@@ -70,7 +60,6 @@ const Home = () => {
           urlImage: pok.data.sprites.other.dream_world.front_default,
           id: pok.data.id,
         }));
-        console.log(mapPokemons);
         setLoading(false);
         setPokemons((props) => [...props, ...mapPokemons]);
       } catch {
@@ -84,14 +73,18 @@ const Home = () => {
     <Container>
       <div>
         {pokemonsFilter.map((pokemon) => (
-          <button key={pokemon.id} className="card_Container">
+          <Link
+            to={`/pokemon/${pokemon.id}`}
+            key={pokemon.id}
+            className="card_Container"
+          >
             <PokeCard
               id={pokemon.id}
               types={pokemon.types}
               name={pokemon.name}
               imageUrl={pokemon.urlImage}
             />
-          </button>
+          </Link>
         ))}
       </div>
       <div className="button_container">

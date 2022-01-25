@@ -3,9 +3,11 @@ import Button from "../../components/Button";
 import PokeCard from "../../components/PokeCard";
 import api from "../../config/api";
 import Container from "./styles";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { BsArrowRight } from "react-icons/bs";
 import { useContextProvider } from "../../services/context";
 import { useParams } from "react-router-dom";
+import { getPokemon } from "../../services/api/pokemon";
+import { AxiosResponse } from "axios";
 const Pokemon = () => {
   const [pokemon, setPokemon] = useState<{
     name: string;
@@ -14,32 +16,77 @@ const Pokemon = () => {
     id: number;
     weight: number;
     height: number;
-    // evolutions: Array<{
-    //   name: string;
-    //   urlImage: string;
-    // }>;
+    moves: Array<{
+      move: {
+        name: string;
+      };
+    }>;
+    evolutions: Array<{
+      id: number;
+      urlImage: string;
+    }>;
   }>();
   const { id } = useParams();
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const response = await api.get<{
-          name: string;
-          url: string;
-          types: Array<{ slot: number; type: { name: string } }>;
-          id: number;
-          weight: number;
-          height: number;
-          sprites: {
-            other: {
-              dream_world: {
-                front_default: string;
+      const getNameOfEvolutions = (
+        array: any,
+        finalArray: Array<
+          Promise<
+            AxiosResponse<{
+              id: number;
+              sprites: {
+                other: {
+                  dream_world: {
+                    front_default: string;
+                  };
+                };
+              };
+            }>
+          >
+        >
+      ): Array<
+        Promise<
+          AxiosResponse<{
+            id: number;
+            sprites: {
+              other: {
+                dream_world: {
+                  front_default: string;
+                };
               };
             };
-          };
-        }>(`pokemon/${id}`);
+          }>
+        >
+      > => {
+        console.log(array);
+        if (!array) {
+          return [...finalArray];
+        }
+        return getNameOfEvolutions(array.evolves_to[0], [
+          ...finalArray,
+          getPokemon(array.species.name),
+        ]);
+      };
+      try {
+        const response = await getPokemon(id || 0);
         console.log(response);
+        const evolutionsResponse = await api.get<any>(`evolution-chain/${id}`);
+        console.log(evolutionsResponse);
+        const evolutions = getNameOfEvolutions(
+          evolutionsResponse.data.chain,
+          []
+        );
+        console.log(evolutions);
+        const evolutionsWithImagesResponse = await Promise.all(evolutions);
+        console.log(evolutionsWithImagesResponse);
+        const evolutionsPokemon = evolutionsWithImagesResponse.map(
+          (evolution) => ({
+            id: evolution.data.id,
+            urlImage: evolution.data.sprites.other.dream_world.front_default,
+          })
+        );
         setPokemon({
           name: response.data.name,
           types: response.data.types,
@@ -47,6 +94,8 @@ const Pokemon = () => {
           id: response.data.id,
           weight: response.data.weight,
           height: response.data.height,
+          moves: response.data.moves,
+          evolutions: evolutionsPokemon,
           // evolutions: Array<{
           //   name: string;
           //   urlImage: string;
@@ -96,9 +145,20 @@ const Pokemon = () => {
       <div>
         <h2>Evolução</h2>
         <div className="container_evolution">
-          <div className="pokemon_container">
-            <img src={pokemon?.urlImage} />
-          </div>
+          {pokemon?.evolutions.map((evolution, index) => (
+            <div key={evolution.id}>
+              <div className="pokemon_container">
+                <img src={evolution.urlImage} />
+              </div>
+              {pokemon.evolutions.length == index + 1 ? (
+                <></>
+              ) : (
+                <span>
+                  <BsArrowRight size={36} />
+                </span>
+              )}
+            </div>
+          ))}
         </div>
       </div>
       <div>
@@ -108,26 +168,12 @@ const Pokemon = () => {
         </div>
       </div>
       <div>
-        <div className="move">
-          <h3>Teste</h3>
-          <p>fsdfdjslkfjsdjfjdskjflkjdslkjfldjsjfkldsklfjsd</p>
-        </div>
-        <div className="move">
-          <h3>Teste</h3>
-          <p>fsdfdjslkfjsdjfjdskjflkjdslkjfldjsjfkldsklfjsd</p>
-        </div>
-        <div className="move">
-          <h3>Teste</h3>
-          <p>fsdfdjslkfjsdjfjdskjflkjdslkjfldjsjfkldsklfjsd</p>
-        </div>
-        <div className="move">
-          <h3>Teste</h3>
-          <p>fsdfdjslkfjsdjfjdskjflkjdslkjfldjsjfkldsklfjsd</p>
-        </div>
-        <div className="move">
-          <h3>Teste</h3>
-          <p>fsdfdjslkfjsdjfjdskjflkjdslkjfldjsjfkldsklfjsd</p>
-        </div>
+        {pokemon?.moves.map((move, index) => (
+          <div className="move" key={move.move.name}>
+            <h3>Move {index + 1}</h3>
+            <p>{move.move.name}</p>
+          </div>
+        ))}
       </div>
     </Container>
   );

@@ -20,6 +20,14 @@ export default styled.main`
       display: flex;
       align-items: center;
       justify-content: center;
+      > div {
+        display: flex;
+        align-items: center;
+        span {
+          margin-left: 2rem;
+          margin-right: 2rem;
+        }
+      }
 
       .pokemon_container {
         background: #3c3535;
