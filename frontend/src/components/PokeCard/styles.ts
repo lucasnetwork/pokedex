@@ -48,16 +48,16 @@ export default styled.div`
       color: #fff;
       font-weight: bold;
     }
-
-    .container_types {
-      button {
-        width: 3.6rem;
-        height: 1.3rem;
-        background: #408861;
-        border: none;
-        margin-right: 0.5rem;
-        color: #fff;
-      }
-    }
   }
+`;
+
+export const TypePokemon = styled.span<{
+  color: string;
+}>`
+  width: 3.6rem;
+  height: 1.3rem;
+  background: ${({ color }) => color};
+  border: none;
+  margin-right: 0.5rem;
+  color: #fff;
 `;

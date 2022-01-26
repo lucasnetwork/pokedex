@@ -21,9 +21,10 @@ const Header = () => {
         />
         <AiOutlineSearch />
       </div>
-      <button>
+
+      <Link to="/CreatePokemon">
         <img className="add" src={addPokemon} />
-      </button>
+      </Link>
     </Container>
   );
 };

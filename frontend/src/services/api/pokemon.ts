@@ -2,23 +2,19 @@ import api from "../../config/api";
 
 interface pokemonProps {
   name: string;
-  url: string;
-  types: Array<{ slot: number; type: { name: string } }>;
-  id: number;
-  weight: number;
-  height: number;
-  moves: Array<{
-    move: {
-      name: string;
-    };
+  image_url: string;
+  height: string;
+  weight: string;
+  types: Array<{
+    name: string;
+    color: string;
   }>;
-  sprites: {
-    other: {
-      dream_world: {
-        front_default: string;
-      };
-    };
-  };
+  _id: number;
+  moves: Array<{
+    _id: string;
+    name: string;
+    description: string;
+  }>;
 }
 
 export const getPokemon = (nameOrId: string | number) =>

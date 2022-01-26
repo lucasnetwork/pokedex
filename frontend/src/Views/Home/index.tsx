@@ -11,24 +11,43 @@ const Home = () => {
   const { search } = useContextProvider();
   const [pokemons, setPokemons] = useState<
     Array<{
+      _id: string;
       name: string;
-      types: Array<{ slot: number; type: { name: string } }>;
-      urlImage: string;
-      id: number;
+      image_url: string;
+      types: Array<{
+        _id: string;
+        name: string;
+        color: string;
+      }>;
+      moves: Array<{
+        _id: string;
+        name: string;
+        description: string;
+      }>;
     }>
   >([]);
   const [loading, setLoading] = useState(false);
   const [pokemonsFilter, setPokemonsFilter] = useState<
     Array<{
+      _id: string;
       name: string;
-      types: Array<{ slot: number; type: { name: string } }>;
-      urlImage: string;
-      id: number;
+      image_url: string;
+      types: Array<{
+        _id: string;
+        name: string;
+        color: string;
+      }>;
+      moves: Array<{
+        _id: string;
+        name: string;
+        description: string;
+      }>;
     }>
   >([]);
   const [page, setPage] = useState(0);
   useEffect(() => {
     console.log(search);
+    console.log(pokemons);
     if (!search) {
       setPokemonsFilter(pokemons);
       return;
@@ -42,26 +61,40 @@ const Home = () => {
     async function fetchData() {
       setLoading(true);
       try {
-        const response = await api.get<{
-          results: Array<{ name: string; url: string }>;
-        }>("pokemon", {
+        const response = await api.get<
+          Array<{
+            _id: string;
+            name: string;
+            image_url: string;
+            types: Array<{
+              _id: string;
+              name: string;
+              color: string;
+            }>;
+            moves: Array<{
+              _id: string;
+              name: string;
+              description: string;
+            }>;
+          }>
+        >("pokemon", {
           params: {
             limit: 20,
             offset: page * 20,
           },
         });
-        const pokemonUrls = response.data.results.map((pokemon) =>
-          getPokemon(pokemon.name)
-        );
-        const responsePokemons = await Promise.all(pokemonUrls);
-        const mapPokemons = responsePokemons.map((pok) => ({
-          name: pok.data.name,
-          types: pok.data.types,
-          urlImage: pok.data.sprites.other.dream_world.front_default,
-          id: pok.data.id,
-        }));
+        // const pokemonUrls = response.data.map((pokemon) =>
+        //   getPokemon(pokemon.name)
+        // );
+        // const responsePokemons = await Promise.all(pokemonUrls);
+        // const mapPokemons = responsePokemons.map((pok) => ({
+        //   name: pok.data.name,
+        //   types: pok.data.types,
+        //   urlImage: pok.data.sprites.other.dream_world.front_default,
+        //   id: pok.data.id,
+        // }));
         setLoading(false);
-        setPokemons((props) => [...props, ...mapPokemons]);
+        setPokemons(response.data);
       } catch {
         setLoading(false);
       }
@@ -72,17 +105,17 @@ const Home = () => {
   return (
     <Container>
       <div>
-        {pokemonsFilter.map((pokemon) => (
+        {pokemonsFilter.map((pokemon, index) => (
           <Link
-            to={`/pokemon/${pokemon.id}`}
-            key={pokemon.id}
+            to={`/pokemon/${pokemon._id}`}
+            key={pokemon._id}
             className="card_Container"
           >
             <PokeCard
-              id={pokemon.id}
+              id={index}
               types={pokemon.types}
               name={pokemon.name}
-              imageUrl={pokemon.urlImage}
+              imageUrl={pokemon.image_url}
             />
           </Link>
         ))}

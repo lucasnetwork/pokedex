@@ -12,6 +12,10 @@ export default styled.main`
     grid-column: 2 / span 10;
     grid-row-gap: 2rem;
 
+    .container_image {
+      grid-column: span 3;
+    }
+
     .container_evolution {
       grid-column: span 12;
       background: #634646;
@@ -121,6 +125,16 @@ export default styled.main`
         }
 
         .type {
+          width: 13.25rem;
+          height: 2rem;
+          margin-right: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #c4c4c4;
+          font-size: 1.5rem;
+          color: ${({ theme }) => theme.text.primary};
+          font-weight: bold;
         }
       }
 
@@ -128,20 +142,8 @@ export default styled.main`
         margin-top: 6rem;
       }
     }
+    .move_container {
+      margin-bottom: 2rem;
+    }
   }
-`;
-
-export const Type = styled.span<{
-  color: string;
-}>`
-  width: 13.25rem;
-  height: 2rem;
-  margin-right: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${({ color }) => color};
-  font-size: 1.5rem;
-  color: ${({ theme }) => theme.text.primary};
-  font-weight: bold;
 `;

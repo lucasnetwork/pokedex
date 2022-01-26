@@ -1,4 +1,4 @@
-import Container from "./styles";
+import Container, { TypePokemon } from "./styles";
 import imageCardTest from "../../assets/imageCardTeste.png";
 import React from "react";
 
@@ -6,7 +6,7 @@ interface pokeCardProps {
   name: string;
   imageUrl: string;
   id: number;
-  types: Array<{ slot: number; type: { name: string } }>;
+  types: Array<{ name: string; color: string }>;
 }
 
 const PokeCard: React.FC<pokeCardProps> = ({ name, imageUrl, id, types }) => (
@@ -19,9 +19,9 @@ const PokeCard: React.FC<pokeCardProps> = ({ name, imageUrl, id, types }) => (
       <p className="name">{name}</p>
       <div className="container_types">
         {types.map((type) => (
-          <button key={type.type.name} type="button">
-            {type.type.name}
-          </button>
+          <TypePokemon color={type.color} key={type.name}>
+            {type.name}
+          </TypePokemon>
         ))}
       </div>
     </div>
